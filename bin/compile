@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+# exit immediately if a command exits with a non-zero status.
+set -e
+
+# the pipeline’s return status is the value of the last (rightmost) command
+# to exit with a non-zero status, or zero if all commands exit successfully
+set -o pipefail
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+cd $BUILD_DIR
+
+echo "-----> Running qmake"
+qmake 2>&1 | indent
+
+echo "-----> Running make"
+make 2>&1 | indent
